@@ -50,7 +50,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     "Send-MailMessage -From $From -To $To -Subject $Subject -Body $Body -SmtpServer 'smtp.gmail.com' -port 587 -UseSsl -Credential $Credential;"
 
 :: Task im Task Scheduler erstellen
-schtasks /create /tn "MeineBatchDateiNeustart" /tr "\"%LOCAL_FILE_PATH%\"" /sc once /st 00:10 /rl highest /f
+schtasks /create /tn "BatchSystemRestart" /tr "\"%LOCAL_FILE_PATH%\"" /sc once /st 00:10 /rl highest /f
 
 :: Terminal schließen
 exit
